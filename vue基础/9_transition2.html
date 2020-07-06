@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>钩子函数</title>
+    <style>
+        #ball {
+            width: 50px;
+            height: 50px;
+            background: #ff0000;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="isShow = !isShow">click</button>
+        <transition @before-enter="beforeEnter" @enter="enter"
+            @after-enter="afterEnter"
+        >
+            <div id="ball" v-show="isShow"></div>
+        </transition>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+
+        new Vue({
+            el: "#app",
+            data: {
+                isShow: false
+            },
+            methods:{
+                beforeEnter(el){
+                    el.style.trandform = "translate(0,0)"
+                },
+                enter(el,done){
+                    el.offsetWidth;
+                    el.style.transform = "translate(150px,450px)"
+                    el.style.transition = "all 1s ease"
+                    done()
+                },
+                afterEnter(){
+                    this.isShow = !this.isShow
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

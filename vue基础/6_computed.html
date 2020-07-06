@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>字符串{{msg}}</h1>
+        <h1>反转字符串{{reverseMsg}}</h1>
+        <!-- <h1>反转字符串{{reverseMsg}}</h1>
+        <h1>反转字符串{{reverseMsg}}</h1>
+        <h1>反转字符串{{reverseMsg}}</h1>
+        <h1>反转字符串{{reverseMsg}}</h1>
+        <h1>反转字符串{{reverseMethod()}}</h1>
+        <h1>反转字符串{{reverseMethod()}}</h1> -->
+        <h1>firstName：{{firstName}}</h1>
+        <h1>lastName：{{lastName}}</h1>
+        <h1>fullName：{{fullName}}</h1>
+        <button @click="change()">click</button>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                msg:"CSDN",
+                firstName:"zhang",
+                lastName:'san'
+            },
+            computed:{
+                reverseMsg:function(){
+                    return this.msg.split('').reverse().join('');
+                },
+                // fullName:function(){
+                //     return this.firstName+" "+this.lastName;
+                // }
+                fullName:{
+                    get:function(){
+                        return this.firstName+" "+this.lastName;
+                    },
+                    set:function(newValue){
+                        let name = newValue.split(' ');
+                        this.firstName = name[0];
+                        this.lastName = name[1];
+                    }
+                }
+            },
+            methods:{
+                reverseMethod(){
+                    return this.msg.split('').reverse().join('');
+                },
+                change(){
+                    this.fullName = "li si"
+                }
+            }
+        })
+    </script>
+</body>
+</html>

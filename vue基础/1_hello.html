@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{msg}}
+        {{count+1}}
+        {{isOk?"ok":"no"}}
+    </div>
+
+
+    <script src="vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el:"#app",
+            data:{
+                msg:"你好 Vue",
+                count:1,
+                isOk:true
+            }
+        })
+
+        console.log(vm.msg);
+        console.log(vm.$el);
+        console.log(vm.$data);
+
+    </script>
+</body>
+</html>

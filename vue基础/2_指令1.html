@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .a{
+            background: red;
+        }
+        .b{
+            border:5px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        {{msg}}
+        <div v-html="msg"></div>
+        <h2 :class="classA">CSDN</h2>
+        <h2 :class="{'a':isA,'b':isB}">CSDN</h2>
+        <hr>
+        <div v-if="isLogin">你好</div>
+        <div v-else>请登录</div>
+
+        <div v-if="type === 1">A</div>
+        <div v-else-if="type === 2">B</div>
+        <div v-else>C</div>
+
+        <hr>
+        <div v-show="isShow">你好呀</div>
+        <hr>
+        <h2>{{count}}</h2>
+        <button v-on:click="add($event)">click</button>
+        <a href="http://www.baidu.com" @click.prevent="fn()">百度</a>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                msg:"<span>hello Vue</span>",
+                classA:"a",
+                isA:false,
+                isB:true,
+                isLogin:false,
+                type:1,
+                isShow:false,
+                count:0
+            },
+            methods:{
+                add(e){
+                    console.log(e.target)
+                    this.count++;
+                },
+                fn(){
+                    console.log('点击跳转');
+                }
+            }
+        })
+    </script>
+</body>
+</html>
