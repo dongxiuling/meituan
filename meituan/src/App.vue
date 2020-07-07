@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    cvbnm
     <!-- 美团外卖 -->
     <!-- <router-link to="/home">首页</router-link> -->
     <router-link :to="{name:'home',params:{name:'zs',age:10}}">首页</router-link>
