@@ -2,7 +2,7 @@
   <div>
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getData">
       <ul class="list-container">
-        <li class="shop-list" v-for="item in list" :key="item.id">
+        <li class="shop-list" v-for="item in list" :key="item.id" @click="goDetail(item.id)">
           <div class="img-box">
             <img :src="item.img" alt />
           </div>
@@ -63,6 +63,9 @@ export default {
           this.finished = true;
         }
       });
+    },
+    goDetail(id){
+      this.$router.push({path:'/detail',query:{id}})
     }
   },
   // created() {
