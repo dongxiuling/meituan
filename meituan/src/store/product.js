@@ -13,9 +13,12 @@ const product = {
     actions: {
         // 请求商品列表
         getProdList({commit},id){
-            getProdById({id}).then(res=>{
-                // console.log(res);
-                commit('saveProdList',res.data.goods)
+            return new Promise(resolve=>{
+                getProdById({id}).then(res=>{
+                    // console.log(res);
+                    commit('saveProdList',res.data.goods)
+                    resolve();
+                })
             })
         }
     }

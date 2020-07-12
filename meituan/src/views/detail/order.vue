@@ -31,12 +31,34 @@
 
 <script>
 import {mapState} from 'vuex'
+import BScroll from 'better-scroll'
 export default {
+  data(){
+    return {
+      menuScroll:null,
+      prodScroll:null
+    }
+  },
+  methods:{
+    initScroll(){
+      this.menuScroll = new BScroll('.menu-box',{
+      bounce:false
+    });
+      this.prodScroll = new BScroll('.prod-box',{
+      bounce:false
+    });
+    }
+  },
   computed:{
     ...mapState('product',['productList'])
   },
   created(){
-    this.$store.dispatch('product/getProdList',this.$route.query.id)
+    this.$store.dispatch('product/getProdList',this.$route.query.id).then(()=>{
+      // 初始化 betterScroll
+      this.$nextTick(()=>{
+        this.initScroll();
+      })
+    })
   }
 };
 </script>
@@ -44,11 +66,14 @@ export default {
 <style lang="scss" scoped>
 .order-box {
   display: flex;
+  height:calc(100vh - 44px);
+  overflow: hidden;
   .menu-box {
     width: 1.6rem;
     flex: 0 0 1.6rem;
     background: #f5f5f5;
     height: calc(100vh - 94px);
+    overflow: hidden;
     .menu-list {
       color: #2c3e50;
       font-size: 0.26rem;
@@ -64,6 +89,7 @@ export default {
     min-width: 0;
     background: #fff;
     height: calc(100vh - 94px);
+    overflow: hidden;
     .cate-list{
         padding:0 0.2rem;
         .cate-title{
