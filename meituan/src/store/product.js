@@ -1,0 +1,23 @@
+import {getProdById} from '@/api/detail'
+const product = {
+    namespaced:true,
+    state: {    
+        productList:[]
+    },
+    getters:{},
+    mutations: {
+        saveProdList(state,arr){
+            state.productList = [...arr];
+        }
+    },
+    actions: {
+        // 请求商品列表
+        getProdList({commit},id){
+            getProdById({id}).then(res=>{
+                // console.log(res);
+                commit('saveProdList',res.data.goods)
+            })
+        }
+    }
+  }
+export default product

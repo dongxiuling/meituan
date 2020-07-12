@@ -6,3 +6,10 @@ export function getStoreById(data){
         data
     })
 }
+// 获取商品列表
+export function getProdById(data){
+    return request({
+        url:'/get_nav',
+        data
+    })
+}

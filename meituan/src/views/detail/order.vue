@@ -3,59 +3,22 @@
     <div class="order-box">
       <div class="menu-box">
         <ul>
-          <li class="menu-list active">caidan</li>
-          <li class="menu-list">当季推荐 当季推荐</li>
-          <li class="menu-list">当季推荐</li>
+          <li v-for="(item,index) in productList" :key="index" class="menu-list">{{item.name}}</li>
         </ul>
       </div>
       <div class="prod-box">
         <ul>
-          <li class="cate-list">
-            <div class="cate-title">当季推荐</div>
+          <li class="cate-list" v-for="(item,index) in productList" :key="index">
+            <div class="cate-title">{{item.name}}</div>
             <ul>
-              <li class="prod-list">
+              <li class="prod-list" v-for="prod in item.content" :key="prod.id">
                   <div class="prod-img-box">
-                      <img src="http://admin.gxxmglzx.com/tender/upload/test/goods7.png" alt="">
+                      <img :src="prod.img" alt="">
                   </div>
                   <div class="prod-info">
-                      <div class="name">北海道云朵吐司</div>
-                      <div class="sale"><span class="num">00月销</span><span>赞 33</span></div>
-                      <div class="price">￥100</div>
-                  </div>
-              </li>
-              <li class="prod-list">
-                  <div class="prod-img-box">
-                      <img src="http://admin.gxxmglzx.com/tender/upload/test/goods7.png" alt="">
-                  </div>
-                  <div class="prod-info">
-                      <div class="name">北海道云朵吐司</div>
-                      <div class="sale"><span class="num">00月销</span><span>赞 33</span></div>
-                      <div class="price">￥100</div>
-                  </div>
-              </li>
-            </ul>
-          </li>
-           <li class="cate-list">
-            <div class="cate-title">当季推荐</div>
-            <ul>
-              <li class="prod-list">
-                  <div class="prod-img-box">
-                      <img src="http://admin.gxxmglzx.com/tender/upload/test/goods7.png" alt="">
-                  </div>
-                  <div class="prod-info">
-                      <div class="name">北海道云朵吐司</div>
-                      <div class="sale"><span class="num">00月销</span><span>赞 33</span></div>
-                      <div class="price">￥100</div>
-                  </div>
-              </li>
-              <li class="prod-list">
-                  <div class="prod-img-box">
-                      <img src="http://admin.gxxmglzx.com/tender/upload/test/goods7.png" alt="">
-                  </div>
-                  <div class="prod-info">
-                      <div class="name">北海道云朵吐司</div>
-                      <div class="sale"><span class="num">00月销</span><span>赞 33</span></div>
-                      <div class="price">￥100</div>
+                      <div class="name">{{prod.name}}</div>
+                      <div class="sale"><span class="num">月销{{prod.num}}</span><span>赞{{prod.up}}</span></div>
+                      <div class="price">￥{{prod.price}}</div>
                   </div>
               </li>
             </ul>
@@ -67,7 +30,15 @@
 </template>
 
 <script>
-export default {};
+import {mapState} from 'vuex'
+export default {
+  computed:{
+    ...mapState('product',['productList'])
+  },
+  created(){
+    this.$store.dispatch('product/getProdList',this.$route.query.id)
+  }
+};
 </script>
 
 <style lang="scss" scoped>

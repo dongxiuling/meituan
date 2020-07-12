@@ -2,7 +2,7 @@
   <div>
     <seller-header :seller="seller"></seller-header>
     <van-tabs v-model="active" sticky animated color="#ffda41">
-      <van-tab title="菜单">
+      <van-tab title="点餐">
           <order></order>
       </van-tab>
       <van-tab title="评价">内容 2</van-tab>
