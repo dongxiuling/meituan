@@ -1,21 +1,36 @@
 <template>
   <div class="cart-container">
     <div class="cart-box">
-      <div class="cart-icon active">
+      <div class="cart-icon" :class="{'active':total}">
         <span class="iconfont icon-gouwuche1"></span>
-        <span class="num">10</span>
+        <span class="num" v-show="total">{{total}}</span>
       </div>
-      <div class="cart-price active">
-        <div class="price">￥30</div>
-        <div class="deliver">另需配送费￥20</div>
+      <div class="cart-price" :class="{'active':total}">
+        <div class="price">￥{{totalPrice}}</div>
+        <div class="deliver">另需配送费￥{{seller.fee}}</div>
       </div>
-      <div class="cart-buy active">￥15元起送</div>
+      <div class="cart-buy" :class="{'active':totalPrice>seller.price}">{{buyDesc}}</div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import {mapGetters} from 'vuex'
+export default {
+    computed:{
+        ...mapGetters('product',["totalPrice","total"]),
+        buyDesc(){
+            if(this.totalPrice == 0){
+                return `￥${this.seller.price}元起送`;
+            }else if(this.totalPrice < this.seller.price){
+                return `还差￥${this.seller.price-this.totalPrice}元起送`;
+            }else{
+                return "去结算"
+            }
+        }
+    },
+    props:["seller"]
+};
 </script>
 
 <style lang="scss" scoped>
