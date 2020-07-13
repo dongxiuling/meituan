@@ -11,25 +11,65 @@
       </div>
       <div class="cart-buy" :class="{'active':totalPrice>seller.price}">{{buyDesc}}</div>
     </div>
+    <div class="ball-box">
+      <div v-for="(ball,index) in ballList" :key="index">
+        <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+          <div class="ball" v-show="ball.show">
+            <div class="inner"></div>
+          </div>
+        </transition>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters, mapState } from "vuex";
 export default {
-    computed:{
-        ...mapGetters('product',["totalPrice","total"]),
-        buyDesc(){
-            if(this.totalPrice == 0){
-                return `￥${this.seller.price}元起送`;
-            }else if(this.totalPrice < this.seller.price){
-                return `还差￥${this.seller.price-this.totalPrice}元起送`;
-            }else{
-                return "去结算"
-            }
+  computed: {
+    ...mapGetters("product", ["totalPrice", "total"]),
+    ...mapState("ball", ["ballList"]),
+    buyDesc() {
+      if (this.totalPrice == 0) {
+        return `￥${this.seller.price}元起送`;
+      } else if (this.totalPrice < this.seller.price) {
+        return `还差￥${this.seller.price - this.totalPrice}元起送`;
+      } else {
+        return "去结算";
+      }
+    }
+  },
+  props: ["seller"],
+  methods: {
+    beforeEnter(el) {
+      for (let i = 0; i < this.ballList.length; i++) {
+        let ball = this.ballList[i];
+        if (ball.show) {
+          let pos = ball.el.getBoundingClientRect();
+          let y = window.innerHeight - pos.top - 23;
+          let x = pos.left - 30;
+          el.display = "";
+          el.style.transform = `translate3d(0,${-y}px,0)`;
+          let inner = el.getElementsByClassName("inner")[0];
+          inner.style.transform = `translate3d(${x}px,0,0)`;
         }
+      }
     },
-    props:["seller"]
+    enter(el,done) {
+      el.offsetWidth;
+      this.$nextTick(()=>{
+         el.style.transform = `translate3d(0,0,0)`;
+          let inner = el.getElementsByClassName("inner")[0];
+          inner.style.transform = `translate3d(0,0,0)`;
+          el.addEventListener('transitionend',done)
+      })
+    },
+    afterEnter(el) {
+      el.style.display = "none";
+      // 释放小球
+      this.$store.commit('ball/removeBall')
+    }
+  }
 };
 </script>
 
@@ -95,9 +135,9 @@ export default {
           color: #fff;
           line-height: 33px;
         }
-        .deliver{
-            font-size: 11px;
-            line-height: 16px;
+        .deliver {
+          font-size: 11px;
+          line-height: 16px;
         }
       }
     }
@@ -108,12 +148,25 @@ export default {
       font-weight: bold;
       text-align: center;
       line-height: 50px;
-      &.active{
-          background:#f8c74e ;
-          font-size: 18px;
-          color: #333;
-          font-weight: normal;
+      &.active {
+        background: #f8c74e;
+        font-size: 18px;
+        color: #333;
+        font-weight: normal;
       }
+    }
+  }
+  .ball {
+    position: fixed;
+    left: 30px;
+    bottom: 23px;
+    transition: all 0.4s cubic-bezier(0.48, -0.28, 0.73, 0.42);
+    .inner {
+      width: 16px;
+      height: 16px;
+      background: #00a0dc;
+      border-radius: 50%;
+      transition: all 0.4s linear;
     }
   }
 }

@@ -2,7 +2,7 @@
     <div class="add-cart">
         <span class="iconfont icon-jianhao" v-if="product.count" @click="reduceCart()"></span>
         <span class="num" v-if="product.count">{{product.count}}</span>
-        <span class="iconfont icon-jiahao" @click="addCart()"></span>
+        <span class="iconfont icon-jiahao" @click="addCart($event)"></span>
     </div>
 </template>
 
@@ -15,11 +15,13 @@
             }
         },
         methods:{
-            addCart(){
-                this.$store.commit('product/addCart',{type:this.type,index:this.index})
+            addCart(e){
+                this.$store.commit('product/addCart',{type:this.type,index:this.index});
+                this.$store.commit('ball/show',e.target)
             },
             reduceCart(){
                 this.$store.commit('product/reduceCart',{type:this.type,index:this.index})
+                // 显示小球
             }
         }
     }
