@@ -10,7 +10,7 @@
         <van-tab title="商家">内容 3</van-tab>
       </van-tabs>
     </div>
-    <cart :seller="seller"></cart>
+    <cart v-if="active == 0" :seller="seller"></cart>
   </div>
 </template>
 
@@ -18,14 +18,14 @@
 import { getStoreById } from "@/api/detail.js";
 import sellerHeader from "./seller-header";
 import order from "./order";
-import BScroll from 'better-scroll'
-import cart from './cart'
+import BScroll from "better-scroll";
+import cart from "./cart";
 export default {
   data() {
     return {
       seller: [],
       active: 0,
-      scrollBox:null
+      scrollBox: null
     };
   },
   components: {
@@ -42,10 +42,11 @@ export default {
       });
     }
   },
-  mounted(){
-    this.scrollBox = new BScroll('.scrollBox',{
-      bounce:false
-    })
+  mounted() {
+    this.scrollBox = new BScroll(".scrollBox", {
+      bounce: false,
+      click: true
+    });
   },
   created() {
     this.getStoreMsg();
@@ -54,7 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.scrollBox{
-  height:100vh;
+.scrollBox {
+  height: 100vh;
 }
 </style>

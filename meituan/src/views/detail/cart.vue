@@ -1,6 +1,7 @@
 <template>
+<div>
   <div class="cart-container">
-    <div class="cart-box">
+    <div class="cart-box" @click="isShow=!isShow">
       <div class="cart-icon" :class="{'active':total}">
         <span class="iconfont icon-gouwuche1"></span>
         <span class="num" v-show="total">{{total}}</span>
@@ -20,14 +21,40 @@
         </transition>
       </div>
     </div>
+    <transition name="fade">
+      <div class="cart-list-box" v-show="isShow && total">
+      <div class="title">
+        <span @click="clearCart()">清空购物车</span>
+      </div>
+      <ul class="list-box">
+        <li class="list" v-for="prod in selectList" :key="prod.id">
+          <span class="name">{{prod.name}}</span>
+          <span class="price">￥{{prod.price}}</span>
+          <add-cart :type="prod.type" :index="prod.index"></add-cart>
+        </li>
+      </ul>
+    </div>
+    </transition>
   </div>
+  <div class="mask" v-show="isShow && total" @click="isShow= !isShow"></div>
+</div>
+  
 </template>
 
 <script>
 import { mapGetters, mapState } from "vuex";
+import addCart from "@/components/add-cart"
 export default {
+  data(){
+    return {
+      isShow:false
+    }
+  },
+  components:{
+    addCart
+  },
   computed: {
-    ...mapGetters("product", ["totalPrice", "total"]),
+    ...mapGetters("product", ["totalPrice", "total","selectList"]),
     ...mapState("ball", ["ballList"]),
     buyDesc() {
       if (this.totalPrice == 0) {
@@ -55,19 +82,22 @@ export default {
         }
       }
     },
-    enter(el,done) {
+    enter(el, done) {
       el.offsetWidth;
-      this.$nextTick(()=>{
-         el.style.transform = `translate3d(0,0,0)`;
-          let inner = el.getElementsByClassName("inner")[0];
-          inner.style.transform = `translate3d(0,0,0)`;
-          el.addEventListener('transitionend',done)
-      })
+      this.$nextTick(() => {
+        el.style.transform = `translate3d(0,0,0)`;
+        let inner = el.getElementsByClassName("inner")[0];
+        inner.style.transform = `translate3d(0,0,0)`;
+        el.addEventListener("transitionend", done);
+      });
     },
     afterEnter(el) {
       el.style.display = "none";
       // 释放小球
-      this.$store.commit('ball/removeBall')
+      this.$store.commit("ball/removeBall");
+    },
+    clearCart(){
+      this.$store.commit('product/clearList')
     }
   }
 };
@@ -76,6 +106,7 @@ export default {
 <style lang="scss" scoped>
 .cart-container {
   position: fixed;
+  z-index:80;
   left: 0;
   bottom: 0;
   height: 50px;
@@ -83,6 +114,7 @@ export default {
   width: 100%;
   .cart-box {
     display: flex;
+     background: #3b3b3c;
     .cart-icon {
       width: 50px;
       height: 50px;
@@ -118,6 +150,7 @@ export default {
       }
     }
     .cart-price {
+       background: #3b3b3c;
       padding-left: 70px;
       flex: 1;
       color: #999;
@@ -169,5 +202,69 @@ export default {
       transition: all 0.4s linear;
     }
   }
+  .cart-list-box {
+    position: absolute;
+    left: 0;
+    bottom: 50px;
+    z-index:-1;
+    background: #fff;
+    width: 100%;
+    border-top: 1px solid #e4e4e4;
+    .title {
+      height: 30px;
+      line-height: 30px;
+      padding: 0 10px;
+      text-align: right;
+      font-size: 12px;
+      background: #f4f4f4;
+      color: #2c3e50;
+    }
+    .list-box {
+      padding: 0 10px;
+      .list {
+        padding: 14px 0;
+        border-bottom: 1px solid #e4e4e4;
+        display: flex;
+        .name {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .price {
+          color: #fb4e44;
+          padding: 0 25px;
+        }
+      }
+    }
+  }
+  .fade-enter{
+    transform: translateY(100%);
+  }
+  .fade-enter-active{
+    transition: transform ease 200ms;
+  }
+  .fade-enter-to{
+     transform: translateY(0);
+  }
 }
+.mask{
+  position: fixed;
+  left:0;
+  top:0;
+  right: 0;
+  bottom: 0;
+  background: rgba(7, 17, 27, 0.6);
+  backdrop-filter: blur(10px);
+  z-index:50;
+}
+
+
+
+
+
+
+    
+
 </style>
