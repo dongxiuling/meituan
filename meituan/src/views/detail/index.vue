@@ -10,6 +10,7 @@
         <van-tab title="商家">内容 3</van-tab>
       </van-tabs>
     </div>
+    <cart></cart>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import { getStoreById } from "@/api/detail.js";
 import sellerHeader from "./seller-header";
 import order from "./order";
 import BScroll from 'better-scroll'
+import cart from './cart'
 export default {
   data() {
     return {
@@ -28,7 +30,8 @@ export default {
   },
   components: {
     sellerHeader,
-    order
+    order,
+    cart
   },
   methods: {
     getStoreMsg() {
